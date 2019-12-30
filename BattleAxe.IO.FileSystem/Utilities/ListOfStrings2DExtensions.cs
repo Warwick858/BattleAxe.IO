@@ -27,55 +27,54 @@
 // ******************************************************************************************************************
 //
 using System.Collections.Generic;
-using System.IO;
+using System.Text;
 
-namespace BattleAxe.IO.FileSystem.Csv
+namespace BattleAxe.IO.FileSystem.Utilities
 {
-	public static class CsvReader
+	public static class ListOfStrings2DExtensions
 	{
 		/// <summary>
-		/// Reads the csv file at the given path.
+		/// Converts a 2D List of strings to a 1D list of strings.
+		/// Concatenates each row into comma separated strings.
 		/// </summary>
-		/// <returns>string, success = the contents of the file & failuire = string.Empty</returns>
-		public static string AllAsString(string path)
+		/// <returns></returns>
+		public static List<string> To1DByRow(this List<List<string>> list2D)
 		{
-			if (File.Exists(path))
-				ReadData(path);
+			List<string> temp = new List<string>();
+			StringBuilder sb = new StringBuilder();
 
-			return string.Empty;
+			foreach (var s in list2D)
+			{
+				foreach (var n in s)
+				{
+					sb.Append(n + " ");
+				}
+
+				temp.Add(sb.ToString());
+				sb.Clear();
+			} // end foreach
+
+			return temp;
 		} // end method
 
 		/// <summary>
-		/// Reads the csv file at the given path.
+		/// Converts a 2D List of strings to one comma separated string.
+		/// Appends row-to-row.
 		/// </summary>
-		/// <returns>list of a list of strings, success = the contents of the file & failuire = an empty list</returns>
-		public static List<List<string>> AllAsList(string path)
+		/// <returns>The given list as a comma separated string, sliced by row</returns>
+		public static string ToStringByRow(this List<List<string>> list2D)
 		{
-			if (File.Exists(path))
-				return ReadData(path);
+			List<string> temp = new List<string>();
+			StringBuilder sb = new StringBuilder();
 
-			return new List<List<string>>();
-		} // end method
+			temp = list2D.To1DByRow();
 
-		private static List<List<string>> ReadData(string file)
-		{
-			List<List<string>> data = new List<List<string>>();
-			List<string> tempData = new List<string>();
-
-			using var reader = new StreamReader(file);
-			using var csv = new CsvHelper.CsvReader(reader);
-
-			while (csv.Read())
+			foreach (var s in temp)
 			{
-				tempData = new List<string>();
+				sb.Append(s);
+			} // end foreach
 
-				foreach (var c in csv.Context.Record)
-					tempData.Add(c);
-
-				data.Add(tempData);
-			} // end while
-
-			return data;
+			return sb.ToString();
 		} // end method
 	} // end class
 } // end namespace

@@ -26,56 +26,50 @@
 //
 // ******************************************************************************************************************
 //
+using BattleAxe.IO.FileSystem.Utilities;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Text;
 
-namespace BattleAxe.IO.FileSystem.Csv
+namespace BattleAxe.IO.FileSystem.Tests.Utilities
 {
-	public static class CsvReader
+	[TestFixture]
+	public class ListOfStrings2DExtensionsTests
 	{
-		/// <summary>
-		/// Reads the csv file at the given path.
-		/// </summary>
-		/// <returns>string, success = the contents of the file & failuire = string.Empty</returns>
-		public static string AllAsString(string path)
+		[SetUp]
+		public void Setup()
 		{
-			if (File.Exists(path))
-				ReadData(path);
+		}
 
-			return string.Empty;
-		} // end method
-
-		/// <summary>
-		/// Reads the csv file at the given path.
-		/// </summary>
-		/// <returns>list of a list of strings, success = the contents of the file & failuire = an empty list</returns>
-		public static List<List<string>> AllAsList(string path)
+		[Test]
+		public void To1DByRow_Test()
 		{
-			if (File.Exists(path))
-				return ReadData(path);
-
-			return new List<List<string>>();
-		} // end method
-
-		private static List<List<string>> ReadData(string file)
-		{
-			List<List<string>> data = new List<List<string>>();
-			List<string> tempData = new List<string>();
-
-			using var reader = new StreamReader(file);
-			using var csv = new CsvHelper.CsvReader(reader);
-
-			while (csv.Read())
+			List<List<string>> data = new List<List<string>>()
 			{
-				tempData = new List<string>();
+				new List<string>(){ "1", "2", "3", "4", "5" },
+				new List<string>(){ "6", "7", "8", "9", "10" },
+				new List<string>(){ "11", "12", "13", "14", "15" },
+				new List<string>(){ "16", "17", "18", "19", "20" },
+			};
 
-				foreach (var c in csv.Context.Record)
-					tempData.Add(c);
+			var result = data.To1DByRow();
+			Assert.IsNotEmpty(result);
+		} // end method
 
-				data.Add(tempData);
-			} // end while
+		[Test]
+		public void ToStringByRow_Test()
+		{
+			List<List<string>> data = new List<List<string>>()
+			{
+				new List<string>(){ "1", "2", "3", "4", "5" },
+				new List<string>(){ "6", "7", "8", "9", "10" },
+				new List<string>(){ "11", "12", "13", "14", "15" },
+				new List<string>(){ "16", "17", "18", "19", "20" },
+			};
 
-			return data;
+			var result = data.ToStringByRow();
+			Assert.IsNotEmpty(result);
 		} // end method
 	} // end class
 } // end namespace
