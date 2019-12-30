@@ -26,14 +26,56 @@
 //
 // ******************************************************************************************************************
 //
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace BattleAxe.IO.FileSystem.Csv
 {
 	public static class CsvReader
 	{
+		/// <summary>
+		/// Reads the csv file at the given path.
+		/// </summary>
+		/// <returns>string, success = the contents of the file & failuire = string.Empty</returns>
+		public static string AllAsString(string path)
+		{
+			if (File.Exists(path))
+				ReadData(path);
 
-	}
-}
+			return string.Empty;
+		} // end method
+
+		/// <summary>
+		/// Reads the csv file at the given path.
+		/// </summary>
+		/// <returns>list of a list of strings, success = the contents of the file & failuire = an empty list</returns>
+		public static List<List<string>> AllAsList(string path)
+		{
+			if (File.Exists(path))
+				return ReadData(path);
+
+			return new List<List<string>>();
+		} // end method
+
+		public static List<List<string>> ReadData(string file)
+		{
+			List<List<string>> data = new List<List<string>>();
+			List<string> tempData = new List<string>();
+
+			using var reader = new StreamReader(file);
+			using var csv = new CsvHelper.CsvReader(reader);
+
+			while (csv.Read())
+			{
+				tempData = new List<string>();
+
+				foreach (var c in csv.Context.Record)
+					tempData.Add(c);
+
+				data.Add(tempData);
+			} // end while
+
+			return data;
+		} // end method
+	} // end class
+} // end namespace

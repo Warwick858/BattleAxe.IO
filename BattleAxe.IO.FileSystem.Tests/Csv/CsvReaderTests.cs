@@ -26,6 +26,7 @@
 //
 // ******************************************************************************************************************
 //
+using BattleAxe.IO.FileSystem.Csv;
 using NUnit.Framework;
 
 namespace BattleAxe.IO.FileSystem.Tests.Csv
@@ -41,11 +42,19 @@ namespace BattleAxe.IO.FileSystem.Tests.Csv
 		}
 
 		[Test]
-		[TestCase("read.txt")]
+		[TestCase("read.csv")]
 		public void AllAsString_Test(string path)
 		{
-			//var result = TxtReader.AllAsString(_dataPathBase + path);
-			//Assert.IsNotEmpty(result);
-		}
+			var result = CsvReader.AllAsString(_dataPathBase + path);
+			Assert.IsNotEmpty(result);
+		} // end method
+
+		[Test]
+		[TestCase("read.csv")]
+		public void AllAsList_Test(string path)
+		{
+			var result = CsvReader.AllAsList(_dataPathBase + path);
+			Assert.NotZero(result.Count);
+		} // end method
 	} // end class
 } // end namespace
