@@ -26,6 +26,7 @@
 //
 // ******************************************************************************************************************
 //
+using BattleAxe.IO.FileSystem.Utilities;
 using System.Collections.Generic;
 using System.IO;
 
@@ -35,12 +36,13 @@ namespace BattleAxe.IO.FileSystem.Csv
 	{
 		/// <summary>
 		/// Reads the csv file at the given path.
+		/// Appends row-to-row.
 		/// </summary>
 		/// <returns>string, success = the contents of the file & failuire = string.Empty</returns>
-		public static string AllAsString(string path)
+		public static string AllAsStringByRow(string path)
 		{
 			if (File.Exists(path))
-				ReadData(path);
+				return ReadData(path).ToStringByRow();
 
 			return string.Empty;
 		} // end method

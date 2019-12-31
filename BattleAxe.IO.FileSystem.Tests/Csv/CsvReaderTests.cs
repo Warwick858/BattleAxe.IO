@@ -45,7 +45,7 @@ namespace BattleAxe.IO.FileSystem.Tests.Csv
 		[TestCase("read.csv")]
 		public void AllAsString_Test(string path)
 		{
-			var result = CsvReader.AllAsString(_dataPathBase + path);
+			var result = CsvReader.AllAsStringByRow(_dataPathBase + path);
 			Assert.IsNotEmpty(result);
 		} // end method
 

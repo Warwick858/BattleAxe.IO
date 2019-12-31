@@ -26,55 +26,36 @@
 //
 // ******************************************************************************************************************
 //
+using BattleAxe.IO.FileSystem.Csv;
+using NUnit.Framework;
 using System.Collections.Generic;
-using System.Text;
 
-namespace BattleAxe.IO.FileSystem.Utilities
+namespace BattleAxe.IO.FileSystem.Tests.Csv
 {
-	public static class ListOfStrings2DExtensions
+	[TestFixture]
+	public class CsvWriterTests
 	{
-		/// <summary>
-		/// Converts a 2D List of strings to a 1D list of strings.
-		/// Concatenates each row into comma separated strings.
-		/// </summary>
-		/// <returns></returns>
-		public static List<string> To1DByRow(this List<List<string>> list2D)
+		private readonly string _dataPathBase = @"D:\Documents\Code\C#\Core\BattleAxe.IO\Data\";
+
+		[SetUp]
+		public void Setup()
 		{
-			List<string> temp = new List<string>();
-			StringBuilder sb = new StringBuilder();
+		}
 
-			foreach (var s in list2D)
-			{
-				foreach (var n in s)
-				{
-					sb.Append(n + ", ");
-				}
-
-				temp.Add(sb.ToString());
-				sb.Clear();
-			} // end foreach
-
-			return temp;
-		} // end method
-
-		/// <summary>
-		/// Converts a 2D List of strings to one comma separated string.
-		/// Appends row-to-row.
-		/// </summary>
-		/// <returns>The given list as a comma separated string, sliced by row</returns>
-		public static string ToStringByRow(this List<List<string>> list2D)
+		[Test]
+		[TestCase("write.csv")]
+		public void All_Test(string path)
 		{
-			List<string> temp = new List<string>();
-			StringBuilder sb = new StringBuilder();
-
-			temp = list2D.To1DByRow();
-
-			foreach (var s in temp)
+			List<List<string>> data = new List<List<string>>()
 			{
-				sb.Append(s);
-			} // end foreach
+				new List<string>(){ "1", "2", "3", "4", "5" },
+				new List<string>(){ "6", "7", "8", "9", "10" },
+				new List<string>(){ "11", "12", "13", "14", "15" },
+				new List<string>(){ "16", "17", "18", "19", "20" },
+			};
 
-			return sb.ToString();
+			var result = CsvWriter.All(_dataPathBase + path, data);
+			Assert.IsTrue(result);
 		} // end method
 	} // end class
 } // end namespace

@@ -26,55 +26,37 @@
 //
 // ******************************************************************************************************************
 //
+using BattleAxe.IO.FileSystem.Utilities;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
-namespace BattleAxe.IO.FileSystem.Utilities
+namespace BattleAxe.IO.FileSystem.Csv
 {
-	public static class ListOfStrings2DExtensions
+	public class CsvWriter
 	{
 		/// <summary>
-		/// Converts a 2D List of strings to a 1D list of strings.
-		/// Concatenates each row into comma separated strings.
+		/// Writes the given string to the given file path.
 		/// </summary>
-		/// <returns></returns>
-		public static List<string> To1DByRow(this List<List<string>> list2D)
+		/// <returns>bool, true = success & false = failure</returns>
+		public static bool All(string path, List<List<string>> data)
 		{
-			List<string> temp = new List<string>();
-			StringBuilder sb = new StringBuilder();
-
-			foreach (var s in list2D)
+			if (Directory.GetParent(path).Exists)
 			{
-				foreach (var n in s)
+				using var writer = new StreamWriter(path);
+				using var csv = new CsvHelper.CsvWriter(writer);
+				
+				foreach (var l in data)
 				{
-					sb.Append(n + ", ");
-				}
+					foreach (var s in l)
+						csv.WriteField(s);
 
-				temp.Add(sb.ToString());
-				sb.Clear();
-			} // end foreach
+					csv.NextRecord();
+				} // end foreach
 
-			return temp;
-		} // end method
+				return true;
+			} // end if
 
-		/// <summary>
-		/// Converts a 2D List of strings to one comma separated string.
-		/// Appends row-to-row.
-		/// </summary>
-		/// <returns>The given list as a comma separated string, sliced by row</returns>
-		public static string ToStringByRow(this List<List<string>> list2D)
-		{
-			List<string> temp = new List<string>();
-			StringBuilder sb = new StringBuilder();
-
-			temp = list2D.To1DByRow();
-
-			foreach (var s in temp)
-			{
-				sb.Append(s);
-			} // end foreach
-
-			return sb.ToString();
+			return false;
 		} // end method
 	} // end class
 } // end namespace
