@@ -6,10 +6,11 @@
 
 * Project Type(s): NUnit, Class Library
 
-* Description: Collection of input/output methods in dotnet core 3.0.
+* Description: Collection of input/output methods for performing filesystem IO via the following formats: .txt, .csv.
 
 * Nuget Packages:
 	* Newtonsoft: 12.0.3
+	* CsvHelper: 12.2.2
 	
 --------------------------------------------------------------------------------------------------
 
