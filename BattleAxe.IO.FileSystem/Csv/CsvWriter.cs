@@ -35,7 +35,7 @@ namespace BattleAxe.IO.FileSystem.Csv
 	public class CsvWriter
 	{
 		/// <summary>
-		/// Writes the given string to the given file path.
+		/// Writes the given list to the given file path.
 		/// </summary>
 		/// <returns>bool, true = success & false = failure</returns>
 		public static bool All(string path, List<List<string>> data)
@@ -49,6 +49,30 @@ namespace BattleAxe.IO.FileSystem.Csv
 				{
 					foreach (var s in l)
 						csv.WriteField(s);
+
+					csv.NextRecord();
+				} // end foreach
+
+				return true;
+			} // end if
+
+			return false;
+		} // end method
+
+		/// <summary>
+		/// Writes the given list to the given file path.
+		/// </summary>
+		/// <returns>bool, true = success & false = failure</returns>
+		public static bool All(string path, List<string> data)
+		{
+			if (Directory.GetParent(path).Exists)
+			{
+				using var writer = new StreamWriter(path);
+				using var csv = new CsvHelper.CsvWriter(writer);
+
+				foreach (var l in data)
+				{
+					csv.WriteField(l);
 
 					csv.NextRecord();
 				} // end foreach

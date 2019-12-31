@@ -44,7 +44,7 @@ namespace BattleAxe.IO.FileSystem.Tests.Csv
 
 		[Test]
 		[TestCase("write.csv")]
-		public void All_Test(string path)
+		public void All2D_Test(string path)
 		{
 			List<List<string>> data = new List<List<string>>()
 			{
@@ -52,6 +52,22 @@ namespace BattleAxe.IO.FileSystem.Tests.Csv
 				new List<string>(){ "6", "7", "8", "9", "10" },
 				new List<string>(){ "11", "12", "13", "14", "15" },
 				new List<string>(){ "16", "17", "18", "19", "20" },
+			};
+
+			var result = CsvWriter.All(_dataPathBase + path, data);
+			Assert.IsTrue(result);
+		} // end method
+
+		[Test]
+		[TestCase("write.csv")]
+		public void All1D_Test(string path)
+		{
+			List<string> data = new List<string>()
+			{
+				"12345",
+				"678910",
+				"1112131415",
+				"1617181920"
 			};
 
 			var result = CsvWriter.All(_dataPathBase + path, data);
